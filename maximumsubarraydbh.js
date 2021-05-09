@@ -1,25 +1,31 @@
+const sum = (V,start,end) => {
+    let total = 0;
+    while(start < end){
+        total += V[start];
+        start += 1; 
+    }
+    return total;
+}
 function maximum_subarray_recurse(V, low, high) {
     if (low === high) {
-        return [low, low + 1, V[low]];
+        return [low, low + 1];
     } else {
         let middle = Math.floor((low + high) / 2);
         
-        let [leftlow, lefthigh, leftsum] = maximum_subarray_recurse(V, low, middle);
-        console.log(`: Entirely Left: ${[leftlow, lefthigh, leftsum]}`); 
-
-        let [rightlow, righthigh, rightsum] = maximum_subarray_recurse(V, middle + 1, high);
-        console.log(`: Entirely Right: ${[rightlow, righthigh, rightsum]}`); 
-
-        let [crosslow, crosshigh, cross_sum] = maximum_subarray_crossing(V, low, middle, high);
-        console.log(`: Crossing: ${[crosslow, crosshigh, cross_sum]}`); 
+        let [leftlow, lefthigh] = maximum_subarray_recurse(V, low, middle);
+        let [rightlow, righthigh] = maximum_subarray_recurse(V, middle + 1, high);
+        let [crosslow, crosshigh] = maximum_subarray_crossing(V, low, middle, high);
         
         // finding the maximum sum among the three values
+        let leftsum = sum(V,leftlow,lefthigh);
+        let rightsum = sum(V, rightlow, righthigh);
+        let cross_sum = sum(V, crosslow, crosshigh);
         if(leftsum > rightsum && leftsum > cross_sum){
-            return [leftlow, lefthigh, leftsum];
+            return [leftlow, lefthigh];
         } else if(rightsum > leftsum && rightsum > cross_sum){
-            return [rightlow, righthigh, rightsum];
+            return [rightlow, righthigh];
         } else {
-            return [crosslow, crosshigh, cross_sum];
+            return [crosslow, crosshigh];
         }
     }
 }
@@ -50,4 +56,4 @@ function maximum_subarray_dbh(V){
     return maximum_subarray_recurse(V, 0, V.length - 1);
 }
 
-console.log(maximum_subarray_dbh([1,2,-9,2,2]));
+console.log(maximum_subarray_dbh([2,2,2,2,2]));
