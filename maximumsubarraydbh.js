@@ -49,7 +49,7 @@ function maximum_subarray_crossing(V, low, middle, high) {
             e = j;
         }
     }
-    return [b, e + 1, left_sum + right_sum];
+    return [b, e + 1];
 }
 
 function maximum_subarray_dbh(V){
